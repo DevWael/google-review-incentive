@@ -29,14 +29,9 @@ class Review_Link_Handler {
 
         $order_id = isset( $_GET['order_id'] ) ? absint( $_GET['order_id'] ) : 0;
         $customer_id = isset( $_GET['customer_id'] ) ? absint( $_GET['customer_id'] ) : 0;
-        $token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : '';
 
-        if ( ! $order_id || ! $customer_id || ! $token ) {
+        if ( ! $order_id || ! $customer_id ) {
             wp_die( esc_html__( 'Invalid review link.', 'google-review-incentive' ) );
-        }
-
-        if ( ! wp_verify_nonce( $token, 'gri_review_link_' . $customer_id . '_' . $order_id ) ) {
-            wp_die( esc_html__( 'Security verification failed.', 'google-review-incentive' ) );
         }
 
         if ( $this->customer_tracker->has_clicked_review_link( $customer_id ) ) {

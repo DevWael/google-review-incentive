@@ -60,14 +60,12 @@ class Email_Handler {
 
         $customer_id = $order->get_customer_id();
         $order_id = $order->get_id();
-        $token = wp_create_nonce( 'gri_review_link_' . $customer_id . '_' . $order_id );
 
         $tracking_url = add_query_arg(
             [
                 'gri_action' => 'review_click',
                 'order_id' => $order_id,
                 'customer_id' => $customer_id,
-                'token' => $token,
             ],
             home_url( '/' )
         );
