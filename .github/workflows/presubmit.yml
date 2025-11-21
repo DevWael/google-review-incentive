@@ -26,3 +26,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_MODEL: "gemini-2.5-flash"
+        with:
+            style_guide_rules: |
+                # Style Guide Rules
+                - Follow WordPress Coding Standards
+                - Prefer descriptive variable and function names
+                - Write clear docstrings for all public functions
