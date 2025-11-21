@@ -30,3 +30,4 @@ jobs:
                 # Style Guide Rules
                 - Prefer WordPress Coding Standards
                 - Prefer descriptive variable and function names
+                - Always respond to comments
