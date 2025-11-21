@@ -1,0 +1,31 @@
+{
+    "name": "devwael/google-review-incentive",
+    "description": "WordPress plugin for Google Review Incentive",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ahmad Wael",
+            "homepage": "https://www.bbioon.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=WordPress --extensions=php --ignore=*/vendor/*,*/node_modules/* .",
+        "phpcbf": "phpcbf --standard=WordPress --extensions=php --ignore=*/vendor/*,*/node_modules/* .",
+        "format": "@phpcbf"
+    }
+}
