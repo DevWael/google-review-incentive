@@ -31,6 +31,5 @@ jobs:
         with:
             style_guide_rules: |
                 # Style Guide Rules
-                - Follow WordPress Coding Standards
+                - Prefer WordPress Coding Standards
                 - Prefer descriptive variable and function names
-                - Write clear docstrings for all public functions
