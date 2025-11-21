@@ -29,8 +29,8 @@ class Review_Link_Handler {
 			return;
 		}
 
-		$order_id = isset( $_GET['order_id'] ) ? absint( $_GET['order_id'] ) : 0;
-		$token    = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : '';
+		$order_id =  $_GET['order_id'];
+		$token    = $_GET['token'];
 
 		if ( ! $order_id || empty( $token ) ) {
 			wp_die( esc_html__( 'Invalid review link.', 'google-review-incentive' ) );
