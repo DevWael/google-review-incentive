@@ -55,8 +55,8 @@ jobs:
           echo "Issue Title: ${{ steps.issue.outputs.title }}" >> /tmp/full-prompt.txt
           echo "Issue Body: ${{ steps.issue.outputs.body }}" >> /tmp/full-prompt.txt
           
-          # Run Gemini CLI and capture output
-          gemini-cli --non-interactive --prompt "$(cat /tmp/full-prompt.txt)" > /tmp/analysis.txt 2>&1 || true
+          # Run Gemini CLI using npx (which works reliably in GitHub Actions)
+          npx -y @google/gemini-cli --non-interactive --prompt "$(cat /tmp/full-prompt.txt)" > /tmp/analysis.txt 2>&1 || true
           
           # Store output in environment variable
           {
