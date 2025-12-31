@@ -55,8 +55,8 @@ jobs:
           echo "Issue Title: ${{ steps.issue.outputs.title }}" >> /tmp/full-prompt.txt
           echo "Issue Body: ${{ steps.issue.outputs.body }}" >> /tmp/full-prompt.txt
           
-          # Run Gemini CLI using -p flag for prompt
-          npx -y @google/gemini-cli -p "$(cat /tmp/full-prompt.txt)" > /tmp/analysis.txt 2>&1 || true
+          # Run Gemini CLI with specific model
+          npx -y @google/gemini-cli -m gemini-2.5-flash -p "$(cat /tmp/full-prompt.txt)" > /tmp/analysis.txt 2>&1 || true
           
           # Store output in environment variable
           {
