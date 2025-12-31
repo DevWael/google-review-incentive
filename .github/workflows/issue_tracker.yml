@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Gemini Analysis
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: |
           ANALYSIS=$(npx @google/gemini-cli -p "${{ steps.prompt.outputs.PROMPT }}
 
