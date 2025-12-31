@@ -23,25 +23,31 @@ jobs:
       - name: Install Gemini CLI
         run: npm install -g @google/gemini-cli
 
-      - name: Read Prompt File
-        id: prompt
+      - name: Create prompt file
         run: |
-          PROMPT_CONTENT=$(cat .github/prompts/issue-analysis.md)
-          echo "PROMPT<<EOF" >> $GITHUB_OUTPUT
-          echo "$PROMPT_CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          cat << 'PROMPTEOF' > /tmp/analysis-prompt.txt
+          $(cat .github/prompts/issue-analysis.md)
+          
+          Issue Title: ${{ github.event.issue.title }}
+          Issue Body: ${{ github.event.issue.body }}
+          PROMPTEOF
 
       - name: Run Gemini Analysis
         env:
           GEMINI_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: |
-          ANALYSIS=$(npx @google/gemini-cli -p "${{ steps.prompt.outputs.PROMPT }}
-
-          Issue Title: ${{ github.event.issue.title }}
-          Issue Body: ${{ github.event.issue.body }}" 2>&1)
-          echo "ANALYSIS<<EOF" >> $GITHUB_ENV
-          echo "$ANALYSIS" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          # Run in non-interactive mode with proper output capture
+          OUTPUT=$(gemini-cli --non-interactive --prompt "$(cat /tmp/analysis-prompt.txt)" 2>&1 || echo "Error running Gemini CLI")
+          
+          # Save output to file
+          echo "$OUTPUT" > /tmp/analysis.txt
+          
+          # Store in environment variable for next step
+          {
+            echo 'ANALYSIS<<ANALYSISEOF'
+            cat /tmp/analysis.txt
+            echo 'ANALYSISEOF'
+          } >> $GITHUB_ENV
 
       - name: Post Comment on Issue
         uses: actions/github-script@v7
