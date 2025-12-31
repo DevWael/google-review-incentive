@@ -23,26 +23,20 @@ jobs:
       - name: Install Gemini CLI
         run: npm install -g @google/gemini-cli
 
-      - name: Create prompt file
-        run: |
-          cat << 'PROMPTEOF' > /tmp/analysis-prompt.txt
-          $(cat .github/prompts/issue-analysis.md)
-          
-          Issue Title: ${{ github.event.issue.title }}
-          Issue Body: ${{ github.event.issue.body }}
-          PROMPTEOF
-
       - name: Run Gemini Analysis
         env:
           GEMINI_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: |
-          # Run in non-interactive mode with proper output capture
-          OUTPUT=$(gemini-cli --non-interactive --prompt "$(cat /tmp/analysis-prompt.txt)" 2>&1 || echo "Error running Gemini CLI")
+          # Create a combined prompt file
+          cat .github/prompts/issue-analysis.md > /tmp/full-prompt.txt
+          echo "" >> /tmp/full-prompt.txt
+          echo "Issue Title: ${{ github.event.issue.title }}" >> /tmp/full-prompt.txt
+          echo "Issue Body: ${{ github.event.issue.body }}" >> /tmp/full-prompt.txt
           
-          # Save output to file
-          echo "$OUTPUT" > /tmp/analysis.txt
+          # Run Gemini CLI and capture output
+          gemini-cli --non-interactive --prompt "$(cat /tmp/full-prompt.txt)" > /tmp/analysis.txt 2>&1 || true
           
-          # Store in environment variable for next step
+          # Store output in environment variable
           {
             echo 'ANALYSIS<<ANALYSISEOF'
             cat /tmp/analysis.txt
